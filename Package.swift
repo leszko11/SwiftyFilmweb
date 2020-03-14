@@ -5,6 +5,12 @@ import PackageDescription
 
 let package = Package(
     name: "SwiftyFilmweb",
+    platforms: [
+        .macOS(.v10_15),
+        .iOS(.v11),
+        .watchOS(.v5),
+        .tvOS(.v11)
+    ],
     products: [
         .library(
             name: "SwiftyFilmweb",
@@ -16,7 +22,7 @@ let package = Package(
     targets: [
         .target(
             name: "SwiftyFilmweb",
-            dependencies: []),
+            dependencies: ["Alamofire"]),
         .testTarget(
             name: "SwiftyFilmwebTests",
             dependencies: ["SwiftyFilmweb"]),
