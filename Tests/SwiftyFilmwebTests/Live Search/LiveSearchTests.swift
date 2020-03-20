@@ -98,23 +98,24 @@ class SwiftyFilmwebTests: XCTestCase {
         // Then
         wait(for: [expectation], timeout: 1.0)
     }
-    
-    func testLiveSearchResponseItemsOtherThanCinemasHaveValidImageURLs() throws {
-        // Given
-        let randomQuery = try XCTUnwrap(NetworkingResponse.response.randomElement()?.key)
-        let expectation = XCTestExpectation()
-        
-        // When
-        sut.search(query: randomQuery, success: { items in
-            let items = items.filter { $0.type != .cinema }
-            let urls = items.compactMap { $0.imageURL }
-            XCTAssertEqual(urls.count, items.count)
-            expectation.fulfill()
-        }) { error in
-            XCTFail(error.localizedDescription)
-        }
-        
-        // Then
-        wait(for: [expectation], timeout: 1.0)
-    }
+  
+    // Test commented out due to https://bugs.swift.org/browse/SR-11501
+//    func testLiveSearchResponseItemsOtherThanCinemasHaveValidImageURLs() throws {
+//        // Given
+//        let randomQuery = try XCTUnwrap(NetworkingResponse.response.randomElement()?.key)
+//        let expectation = XCTestExpectation()
+//
+//        // When
+//        sut.search(query: randomQuery, success: { items in
+//            let items = items.filter { $0.type != .cinema }
+//            let urls = items.compactMap { $0.imageURL }
+//            XCTAssertEqual(urls.count, items.count)
+//            expectation.fulfill()
+//        }) { error in
+//            XCTFail(error.localizedDescription)
+//        }
+//
+//        // Then
+//        wait(for: [expectation], timeout: 1.0)
+//    }
 }
