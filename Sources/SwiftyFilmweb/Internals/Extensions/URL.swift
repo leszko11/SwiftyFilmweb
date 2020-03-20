@@ -9,7 +9,7 @@ import Foundation
 extension URL {
     static func imageURL(forType type: LiveSearchItemType, suffix: String?) -> URL? {
         guard let suffix = suffix,
-            let prefix = type.iamgeURLPrefix else {
+            let prefix = type.imageURLPrefix else {
                 return nil
         }
         return URL(string: prefix + suffix)

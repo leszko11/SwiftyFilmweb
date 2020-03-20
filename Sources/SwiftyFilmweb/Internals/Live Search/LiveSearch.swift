@@ -21,8 +21,8 @@ final class LiveSearch {
     }
     
     func search(query: String,
-                success: (([LiveSearchItem]) -> ())?,
-                failure: ((Error) -> ())?) {
+                success: SwiftyFilmweb.LiveSearchSuccessHandler?,
+                failure: SwiftyFilmweb.LiveSearchErrorHandler?) {
         api.liveSearch(query: query,
                        success: LiveSearch.handleResponse(success: success,
                                                           failure: failure),
@@ -42,8 +42,24 @@ final class LiveSearch {
     }
     
     private static func mapLiveSearchItems(_ rows: [String]) -> [LiveSearchItem] {
-        let items = rows.map { LiveSearchItem(response: $0.components(separatedBy: Constants.responseRecordSeparator)) }
+        let items = rows.map { row -> LiveSearchItem? in
+            let row = row.components(separatedBy: Constants.responseRecordSeparator)
+            guard let item = LiveSearchItem(response: row) else {
+                return nil
+            }
+            
+            switch item.type {
+            case .person:
+                return LiveSearchPerson(response: row)
+            case .film, .tvSeries:
+                return LiveSearchMovie(response: row)
+            case .cinema:
+                return LiveSearchCinema(response: row)
+            default:
+                return item
+            }
+        }
         
-        return []
+        return items.compactMap { $0 }
     }
 }

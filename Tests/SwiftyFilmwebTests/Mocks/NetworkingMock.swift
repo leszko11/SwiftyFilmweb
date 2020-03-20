@@ -11,26 +11,23 @@ import Alamofire
 @testable import SwiftyFilmweb
 
 final class NetworkingMock {
-    // MARK: - Provate Properties
-    private let responseString: String?
-    private let error: Error?
+    enum NetworkingMockError: Error {
+        case noResponse
+    }
     
     // MARK: - Initializers
-    init(responseString: String? = nil,
-         error: Error? = nil) {
-        self.responseString = responseString
-        self.error = error
-    }
+    init() { }
 }
 
 extension NetworkingMock: NetworkingProtocol {
     func liveSearch(query: String,
                     success: ((String) -> ())?,
                     failure: ((Error) -> ())?) {
-        if let error = error {
-            failure?(error)
-        } else if let response = responseString {
+  
+        if let response = NetworkingResponse.response[query] {
             success?(response)
+        } else {
+            failure?(NetworkingMockError.noResponse)
         }
     }
 }
