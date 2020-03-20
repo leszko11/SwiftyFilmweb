@@ -11,7 +11,6 @@ public class LiveSearchItem {
         static let typeIndex = 0
         static let idIndex = 1
         static let imageURLIndex = 2
-        static let invalidId = -1
     }
     
     // MARK: - Public Properties
@@ -19,15 +18,15 @@ public class LiveSearchItem {
     public let id: Int
     public let imageURL: URL?
     
-    // MARK: - Internal Properties
-    var isValid: Bool {
-        return type != .unknown && id > 0
-    }
-    
     // MARK: - Initializers
-    init(response: [String]) {
+    init?(response: [String]) {
+        guard let idString = response[safe: Constants.idIndex],
+            let id = Int(idString) else {
+            return nil
+        }
+        
         self.type = LiveSearchItemType(typeString: response[safe: Constants.typeIndex])
-        self.id = Int(response[safe: Constants.idIndex] ?? "") ?? Constants.invalidId
+        self.id = id
         self.imageURL = URL.imageURL(forType: type, suffix: response[safe: Constants.imageURLIndex])
     }
 }

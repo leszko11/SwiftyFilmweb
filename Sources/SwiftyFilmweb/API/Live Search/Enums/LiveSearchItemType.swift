@@ -31,7 +31,7 @@ public enum LiveSearchItemType: String {
         }
     }
 
-    var iamgeURLPrefix: String? {
+    var imageURLPrefix: String? {
         switch self {
         case .film, .game, .tvSeries:
             return Config.posterImageURL

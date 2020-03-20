@@ -15,13 +15,16 @@ final public class LiveSearchPerson: LiveSearchItem {
     }
     
     // MARK: - Public Properties
-    let fullName: String
-    let gender: Gender
-    let profession: Profession
+    public let fullName: String
+    public let gender: Gender
+    public let profession: Profession
     
     // MARK: - Initializers
-    override init(response: [String]) {
-        self.fullName = response[safe: Constants.fullNameIndex] ?? ""
+    override init?(response: [String]) {
+        guard let fullName = response[safe: Constants.fullNameIndex] else {
+            return nil
+        }
+        self.fullName = fullName
         self.gender = Gender(string: response[safe: Constants.genderIndex])
         self.profession = Profession(string: response[safe: Constants.genderIndex])
         
