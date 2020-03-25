@@ -9,7 +9,7 @@ import XCTest
 
 @testable import SwiftyFilmweb
 
-class SwiftyFilmwebTests: XCTestCase {
+class LiveSearchTests: XCTestCase {
     // MARK: - Subject under test
     var sut: LiveSearch!
         
