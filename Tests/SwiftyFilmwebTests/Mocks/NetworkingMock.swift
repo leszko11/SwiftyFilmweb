@@ -30,4 +30,11 @@ extension NetworkingMock: NetworkingProtocol {
             failure?(NetworkingMockError.noResponse)
         }
     }
+    
+    func request(_ request: BaseRequest,
+                 success: ((String) -> ())?,
+                 failure: ((Error) -> ())?) {
+        
+    }
+    
 }

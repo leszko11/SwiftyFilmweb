@@ -12,12 +12,20 @@ protocol NetworkingProtocol: AnyObject {
     func liveSearch(query: String,
                     success: ((String) -> ())?,
                     failure: ((Error) -> ())?)
+    func request(_ request: BaseRequest,
+                 success: ((String) -> ())?,
+                 failure: ((Error) -> ())?)
 }
 
 final class Networking {
     // MARK: - Private Properties
     private lazy var liveSearchSession: Session = {
         return Session()
+    }()
+    
+    private lazy var requestSession: Session = {
+        let interceptor = ApiInterceptor()
+        return Session(configuration: .default, interceptor: interceptor)
     }()
 }
 
@@ -26,6 +34,22 @@ extension Networking: NetworkingProtocol {
                     success: ((String) -> ())?,
                     failure: ((Error) -> ())?) {
         let dataRequest = liveSearchSession.request(LiveSearchEndpoint(query: query))
+        dataRequest
+            .validate()
+            .responseString { response in
+                switch response.result {
+                case let .success(response):
+                    success?(response)
+                case let .failure(error):
+                    failure?(error)
+                }
+            }
+    }
+    
+    func request(_ request: BaseRequest,
+                 success: ((String) -> ())?,
+                 failure: ((Error) -> ())?) {
+        let dataRequest = requestSession.request(request)
         dataRequest
             .validate()
             .responseString { response in

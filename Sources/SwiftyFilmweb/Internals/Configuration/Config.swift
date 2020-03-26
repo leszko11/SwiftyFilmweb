@@ -8,6 +8,8 @@
 import Foundation
 
 enum Config {
+    static let apiURL = "https://ssl.filmweb.pl/api";
+
     static let liveSearchURL = "https://www.filmweb.pl/search/live"
     
     static let personImageURL = "https://1.fwcdn.pl/p"
